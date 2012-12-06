@@ -9,7 +9,8 @@ jQuery.fn.colourPicker = (conf) ->
     openTxt: "Open colour picker"
     otherWidget: ""
   , conf)
-  
+  #elements = ''
+
   # Inverts a hex-colour
   hexInvert = (hex) ->
     r = hex.substr(0, 2)
@@ -27,9 +28,18 @@ jQuery.fn.colourPicker = (conf) ->
     jQuery(document.body).click (event) ->
       colourPicker.hide config.speed  unless jQuery(event.target).is("#" + config.id) or jQuery(event.target).parents("#" + config.id).length
 
-  
+  @changeColors = (colors)=>
+    loc = ""
+    for c in colors
+      loc += "<li><a href=\"#\" title=\"" + c.title + "\" rel=\"" + c.hex + "\" style=\"background: #" + c.hex + "; colour: " + hexInvert(c.hex) + ";\""
+      loc += " data-ext=\"" + c.ext + "\""  if c.ext?
+      loc += ">" + c.title + "</a></li>"
+    @data().elements = loc
+
+    return
+
   # For every select passed to the plug-in
-  @each ->
+  @each =>
     
     # Insert icon and input
     select = jQuery(this)
@@ -68,11 +78,14 @@ jQuery.fn.colourPicker = (conf) ->
       input.change()
     
     # When you click the icon
-    icon.click ->
+    icon.click =>
       
       # Show the colour-picker next to the icon and fill it with the colours in the select that used to be there
       iconPos = icon.offset()
       heading = (if config.title then "<h2>#{config.title}</h2>" else "")
+      if $(@).data().elements isnt ''
+        loc = $(@).data().elements
+
       colourPicker.html(heading + "<ul>#{loc}</ul>").css(
         position: "absolute"
         left: iconPos.left + "px"
