@@ -21,7 +21,7 @@ jQuery.fn.colourPicker = (conf) ->
   # Add the colour-picker dialogue if not added
   colourPicker = jQuery("#" + config.id)
   unless colourPicker.length
-    colourPicker = jQuery("<div id=\"" + config.id + "\"></div>").appendTo(document.body).hide()
+    colourPicker = jQuery("<div class=\"jquery-colour-picker\" id=\"" + config.id + "\"></div>").appendTo(document.body).hide()
     
     # Remove the colour-picker if you click outside it (on body)
     jQuery(document.body).click (event) ->
